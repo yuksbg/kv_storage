@@ -125,7 +125,7 @@ async def async_setup(hass, config):
         frontend_url_path=DOMAIN,
         sidebar_title="KV Storage",
         sidebar_icon="mdi:database",
-        module_url="/kv_storage_static/kv-storage-panel.js?v=1.0.0",
+        module_url="/kv_storage_static/kv-storage-panel.js?v=1.1.0",
         embed_iframe=False,
         require_admin=False,
     )

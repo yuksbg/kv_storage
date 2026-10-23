@@ -1,6 +1,6 @@
 # KV Storage for Home Assistant
 
-A custom integration providing independent, persistent named key-value stores. Each store is a sensor: its state is the number of keys, and its attributes contain the stored values. The **KV Storage** sidebar shows a live table with add, edit and delete controls. No frontend build or external JavaScript dependencies are needed.
+A custom integration providing independent, persistent named key-value stores. Each store is a sensor: its state is the number of keys, and its attributes contain the stored values. The **KV Storage** sidebar shows a searchable live table with value types and add, edit and delete controls. Add and edit forms open in a dialog. The panel follows your Home Assistant theme and adapts to mobile screens. No frontend build or external JavaScript dependencies are needed.
 
 ## Installation
 
