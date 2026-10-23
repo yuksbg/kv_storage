@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "config_flow": true,
   "dependencies": ["http", "frontend", "panel_custom"],
-  "codeowners": [],
-  "documentation": "https://www.home-assistant.io/integrations/",
+  "codeowners": ["@yuksbg"],
+  "documentation": "https://github.com/yuksbg/kv_storage",
+  "issue_tracker": "https://github.com/yuksbg/kv_storage/issues",
   "integration_type": "helper",
   "iot_class": "local_push",
   "requirements": []

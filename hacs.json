@@ -1,0 +1,5 @@
+{
+  "name": "KV Storage",
+  "homeassistant": "2024.12.0",
+  "render_readme": true
+}
