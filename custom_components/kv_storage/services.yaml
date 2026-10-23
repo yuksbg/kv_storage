@@ -1,0 +1,56 @@
+get:
+  name: Get values
+  description: Read one key or all keys. Returns response data; use response_variable in scripts.
+  fields:
+    store:
+      name: Store
+      description: The store name chosen during setup.
+      required: true
+      example: my_store1
+      selector:
+        text:
+    key:
+      name: Key
+      description: Omit to return all values.
+      example: door_code
+      selector:
+        text:
+set:
+  name: Set value
+  description: Persist a JSON-compatible value and update the store sensor.
+  fields:
+    store:
+      name: Store
+      required: true
+      example: my_store1
+      selector:
+        text:
+    key:
+      name: Key
+      required: true
+      example: door_code
+      selector:
+        text:
+    value:
+      name: Value
+      description: Any JSON value. Quote numeric codes to preserve leading zeroes.
+      required: true
+      example: '"0012"'
+      selector:
+        object:
+delete:
+  name: Delete value
+  description: Delete a key. Deleting an absent key is harmless.
+  fields:
+    store:
+      name: Store
+      required: true
+      example: my_store1
+      selector:
+        text:
+    key:
+      name: Key
+      required: true
+      example: door_code
+      selector:
+        text:

@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KV Storage preview</title><style>
+body{margin:0;--primary-color:#03a9f4;--primary-text-color:#212121;--secondary-text-color:#666;--primary-background-color:#fafafa;--card-background-color:white;--divider-color:#ddd;--error-color:#b00020;font-family:Arial,sans-serif;}kv-storage-panel{height:100vh}
+</style><kv-storage-panel></kv-storage-panel><script type="module">
+import '/custom_components/kv_storage/frontend/kv-storage-panel.js';
+const panel=document.querySelector('kv-storage-panel');
+const values={my_store1:{door_code:'0012',enabled:true,preferences:{rooms:['kitchen','hallway']},'<script>alert(1)<\/script>':'<img src=x onerror=alert(1)>'},empty_store:{}};
+const hass={states:{},async callWS({service_data:{store}}){return {response:{store,values:structuredClone(values[store])}}},async callService(domain,service,{store,key,value}){if(service==='set')values[store][key]=value;else delete values[store][key]; update();}};
+function update(){hass.states=Object.fromEntries(Object.entries(values).map(([name,data])=>['sensor.'+name,{entity_id:'sensor.'+name,state:String(Object.keys(data).length),attributes:{...data,kv_storage_store:name}}]));panel.hass=hass;}update();
+</script></html>

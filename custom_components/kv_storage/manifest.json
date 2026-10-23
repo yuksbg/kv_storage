@@ -1,0 +1,12 @@
+{
+  "domain": "kv_storage",
+  "name": "KV Storage",
+  "version": "1.0.0",
+  "config_flow": true,
+  "dependencies": ["http", "frontend", "panel_custom"],
+  "codeowners": [],
+  "documentation": "https://www.home-assistant.io/integrations/",
+  "integration_type": "helper",
+  "iot_class": "local_push",
+  "requirements": []
+}
