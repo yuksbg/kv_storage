@@ -7,7 +7,7 @@
   "codeowners": ["@yuksbg"],
   "documentation": "https://github.com/yuksbg/kv_storage",
   "issue_tracker": "https://github.com/yuksbg/kv_storage/issues",
-  "integration_type": "helper",
+  "integration_type": "service",
   "iot_class": "local_push",
   "requirements": []
 }
