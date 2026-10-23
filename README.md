@@ -4,6 +4,25 @@ A custom integration providing independent, persistent named key-value stores. E
 
 ## Installation
 
+### HACS
+
+With [HACS](https://www.hacs.dev/) installed in Home Assistant:
+
+1. Open **HACS** from the sidebar.
+2. Open the **three-dot menu → Custom repositories**.
+3. Enter `https://github.com/yuksbg/kv_storage` as the repository URL, select **Integration** as the type, and select **Add**.
+4. Find **KV Storage** in HACS, open it, and select **Download**.
+5. Restart Home Assistant.
+6. Open **Settings → Devices & services → Add integration → KV Storage**.
+7. Enter a store name, for example `my_store1`. Repeat to create more stores.
+8. Open **KV Storage** in the sidebar. If it has not appeared, refresh the browser.
+
+Repository: [yuksbg/kv_storage](https://github.com/yuksbg/kv_storage). See the [HACS custom repository instructions](https://www.hacs.dev/docs/faq/custom_repositories/) for more details.
+
+For updates, download the new version through HACS and restart Home Assistant. Stored values remain in `.storage/kv_storage.sqlite3`, separate from the integration files.
+
+### Manual installation
+
 1. Copy `custom_components/kv_storage` into your Home Assistant configuration directory's `custom_components` folder.
 2. Restart Home Assistant.
 3. Open **Settings → Devices & services → Add integration → KV Storage**.
