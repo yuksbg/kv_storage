@@ -31,6 +31,12 @@ For updates, download the new version through HACS and restart Home Assistant. S
 
 Requires Home Assistant 2024.12 or newer. Store names use 1–64 lowercase letters, digits and underscores, beginning with a letter. The default entity ID is `sensor.my_store1`; Home Assistant may append a suffix if that ID is already in use. Renaming the entity does not change the store name used by services. Keep the sensor enabled for the sidebar to discover it.
 
+## Sidebar visibility
+
+Open **Settings → Devices & services → KV Storage**, then **Configure** on any store entry. Toggle **Show in sidebar** and save. The change takes effect immediately; no restart is needed.
+
+This is a shared setting for all stores and users, enabled by default and retained across restarts. Hiding the link does not disable sensors or services, restrict access, or remove the `/kv_storage` page. You can re-enable it from the same Configure dialog. The preference is stored in `<config>/.storage/kv_storage_settings` and is included with configuration backups.
+
 ## Services / actions
 
 The service domain is **`kv_storage`**. Use the configured store name, not the sensor entity ID.

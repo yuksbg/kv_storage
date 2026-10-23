@@ -8,13 +8,13 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import voluptuous as vol
-from homeassistant.components import panel_custom
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.core import SupportsResponse
 from homeassistant.exceptions import ConfigEntryNotReady, HomeAssistantError, ServiceValidationError
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
 from .const import DOMAIN, PLATFORMS
+from .panel import PanelSettings
 from .storage import Database, validate_key
 
 _LOGGER = logging.getLogger(__name__)
@@ -119,16 +119,9 @@ async def async_setup(hass, config):
             )
         ]
     )
-    await panel_custom.async_register_panel(
-        hass,
-        webcomponent_name="kv-storage-panel",
-        frontend_url_path=DOMAIN,
-        sidebar_title="KV Storage",
-        sidebar_icon="mdi:database",
-        module_url="/kv_storage_static/kv-storage-panel.js?v=1.1.0",
-        embed_iframe=False,
-        require_admin=False,
-    )
+    panel = PanelSettings(hass)
+    hass.data[DOMAIN]["panel"] = panel
+    await panel.async_initialize()
     return True
 
 

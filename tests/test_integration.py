@@ -22,8 +22,7 @@ async def hass(tmp_path):
     await entity_registry.async_load(instance)
     await device_registry.async_load(instance)
     instance.http = SimpleNamespace(async_register_static_paths=AsyncMock())
-    with patch("custom_components.kv_storage.panel_custom.async_register_panel", new=AsyncMock()):
-        await async_setup(instance, {})
+    await async_setup(instance, {})
     yield instance
     await instance.async_stop(force=True)
 
@@ -142,3 +141,77 @@ async def test_config_flow_creates_store(hass):
     assert result["type"] == "create_entry"
     assert result["data"] == {"name": "my_store1"}
     assert result["title"] == "my_store1"
+
+
+async def test_sidebar_visibility_keeps_route_and_values(hass):
+    from homeassistant.components.frontend import DATA_PANELS
+
+    from custom_components.kv_storage.panel import PanelSettings
+
+    await add_store(hass, "one")
+    await add_store(hass, "two")
+    await call(hass, "set", store="one", key="code", value="0012")
+    settings = hass.data["kv_storage"]["panel"]
+    assert hass.data[DATA_PANELS]["kv_storage"].sidebar_title == "KV Storage"
+    await settings.async_set_visibility(False)
+    assert hass.data[DATA_PANELS]["kv_storage"].sidebar_title is None
+    assert hass.data[DATA_PANELS]["kv_storage"].frontend_url_path == "kv_storage"
+    assert (await call(hass, "get", store="one", key="code"))["value"] == "0012"
+    await call(hass, "set", store="two", key="enabled", value=True)
+    # Read the saved setting through a fresh manager, as at startup.
+    hass.data[DATA_PANELS].pop("kv_storage")
+    restored = PanelSettings(hass)
+    await restored.async_initialize()
+    assert restored.show_sidebar is False
+    assert hass.data[DATA_PANELS]["kv_storage"].sidebar_title is None
+    await restored.async_set_visibility(True)
+    assert hass.data[DATA_PANELS]["kv_storage"].sidebar_title == "KV Storage"
+
+
+async def test_options_flow_shares_preference(hass):
+    from custom_components.kv_storage.config_flow import KVStorageConfigFlow
+
+    flow = KVStorageConfigFlow.async_get_options_flow(None)
+    flow.hass = hass
+    result = await flow.async_step_init()
+    assert result["data_schema"]({}) == {"show_sidebar": True}
+    result = await flow.async_step_init({"show_sidebar": False})
+    assert result["type"] == "create_entry"
+    # Opening Configure for any other store reads the same global setting.
+    second = KVStorageConfigFlow.async_get_options_flow(None)
+    second.hass = hass
+    result = await second.async_step_init()
+    assert result["data_schema"]({}) == {"show_sidebar": False}
+
+
+async def test_sidebar_save_error_preserves_visibility(hass):
+    from homeassistant.components.frontend import DATA_PANELS
+
+    from custom_components.kv_storage.config_flow import KVStorageOptionsFlow
+
+    flow = KVStorageOptionsFlow()
+    flow.hass = hass
+    settings = hass.data["kv_storage"]["panel"]
+    with patch.object(settings._storage, "async_save", side_effect=OSError("disk full")):
+        result = await flow.async_step_init({"show_sidebar": False})
+    assert result["errors"] == {"base": "save_failed"}
+    assert settings.show_sidebar is True
+    assert hass.data[DATA_PANELS]["kv_storage"].sidebar_title == "KV Storage"
+
+
+async def test_sidebar_unchanged_setting_does_not_reregister(hass):
+    settings = hass.data["kv_storage"]["panel"]
+    with patch.object(settings, "_async_register", new=AsyncMock()) as register:
+        await settings.async_set_visibility(True)
+    register.assert_not_awaited()
+
+
+async def test_options_flow_when_not_loaded(hass):
+    from custom_components.kv_storage.config_flow import KVStorageOptionsFlow
+
+    hass.data["kv_storage"].pop("panel")
+    flow = KVStorageOptionsFlow()
+    flow.hass = hass
+    result = await flow.async_step_init()
+    assert result["type"] == "abort"
+    assert result["reason"] == "integration_not_loaded"

@@ -1,12 +1,37 @@
 {
   "title": "KV Storage",
   "config": {
-    "step": {"user": {
-      "title": "Create a key-value store",
-      "description": "Choose a unique store name, such as my_store1. Use lowercase letters, numbers and underscores, starting with a letter. Re-adding a previously removed store restores its saved data.",
-      "data": {"name": "Store name"}
-    }},
-    "error": {"invalid_name": "Use 1–64 lowercase letters, numbers or underscores, starting with a letter."},
-    "abort": {"already_configured": "This store already exists."}
+    "step": {
+      "user": {
+        "title": "Create a key-value store",
+        "description": "Choose a unique store name, such as my_store1. Use lowercase letters, numbers and underscores, starting with a letter. Re-adding a previously removed store restores its saved data.",
+        "data": {
+          "name": "Store name"
+        }
+      }
+    },
+    "error": {
+      "invalid_name": "Use 1–64 lowercase letters, numbers or underscores, starting with a letter."
+    },
+    "abort": {
+      "already_configured": "This store already exists."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "KV Storage settings",
+        "description": "This setting applies to the shared KV Storage panel for all stores and users. Hiding the sidebar link keeps /kv_storage, sensors, and services available.",
+        "data": {
+          "show_sidebar": "Show in sidebar"
+        }
+      }
+    },
+    "error": {
+      "save_failed": "Could not save the setting. Please try again."
+    },
+    "abort": {
+      "integration_not_loaded": "KV Storage is not loaded. Load the integration before changing its settings."
+    }
   }
 }
